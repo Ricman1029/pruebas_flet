@@ -34,10 +34,7 @@ class DropDownAutoComplete(flet.Container):
             contador = 0
             lista_filtrada = list(filter(lambda d: e.data.lower() in d["nombre"].lower(), self.lista))
             lista_ordenada = sorted(lista_filtrada, key=lambda persona: persona["nombre"])
-            lista_ordenada = sorted(
-                lista_ordenada,
-                key=lambda persona: persona["nombre"].lower().find(e.data.lower())
-            )
+            lista_ordenada = sorted(lista_ordenada, key=lambda persona: persona["nombre"].lower().find(e.data.lower()))
             # print(lista_ordenada)
             # print(lista_ordenada_filtrada)
             for elemento in lista_ordenada:
