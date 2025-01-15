@@ -14,7 +14,6 @@ class DropDownAutoComplete(flet.Container):
         if height == 0:
             self.salir(e)
         else:
-            print(60 + height * 22)
             dropdown.height = 60 + height * 22 if 60 + height * 22 <= 300 else 300
             dropdown.update()
 
@@ -33,7 +32,15 @@ class DropDownAutoComplete(flet.Container):
             dropdown.content.controls[1].controls.clear()
 
             contador = 0
-            for elemento in self.lista:
+            lista_filtrada = list(filter(lambda d: e.data.lower() in d["nombre"].lower(), self.lista))
+            lista_ordenada = sorted(lista_filtrada, key=lambda persona: persona["nombre"])
+            lista_ordenada = sorted(
+                lista_ordenada,
+                key=lambda persona: persona["nombre"].lower().find(e.data.lower())
+            )
+            # print(lista_ordenada)
+            # print(lista_ordenada_filtrada)
+            for elemento in lista_ordenada:
                 # print(elemento["nombre"])
                 if e.data.lower() in elemento["nombre"].lower():
                     dropdown.content.controls[1].controls.append(
