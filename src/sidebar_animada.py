@@ -44,7 +44,7 @@ class SidebarDestination(flet.Container):
             e.control.update()
 
 
-class Sidebar(flet.Container):
+class Sidebar(flet.Column):
     def __init__(
             self,
             iniciales,
@@ -56,38 +56,44 @@ class Sidebar(flet.Container):
         self.destinations = [destination for destination in destinations]
         for destination in self.destinations:
             destination.on_tap_down = self.seleccionar
-        self.titulo = self.datos_usuarios(
-            iniciales=iniciales,
-            nombre=nombre,
-            descripcion=descripcion
-        )
         super().__init__(
-            bgcolor=flet.Colors.SURFACE,
-            width=self.titulo.width,
-            alignment=flet.alignment.center,
-            padding=flet.Padding(top=15, left=10, right=10, bottom=0),
-            animate=flet.animation.Animation(
-                duration=300,
-                curve=flet.AnimationCurve.DECELERATE
-            ),
-            content=flet.Column(
-                horizontal_alignment=flet.CrossAxisAlignment.CENTER,
-                controls=[
-                    self.titulo,
-                    flet.IconButton(
-                        icon=flet.Icons.ARROW_BACK_IOS_ROUNDED,
-                        on_click=self.animar_sidebar,
-                        rotate=flet.transform.Rotate(0, alignment=flet.alignment.center),
-                        animate_rotation=flet.animation.Animation(300, flet.AnimationCurve.DECELERATE),
+            expand=True,
+            width=200,
+            controls=[
+                flet.Container(
+                    expand=True,
+                    bgcolor=flet.Colors.SURFACE,
+                    # width=200,
+                    alignment=flet.alignment.center,
+                    padding=flet.Padding(top=15, left=10, right=10, bottom=0),
+                    animate=flet.animation.Animation(
+                        duration=300,
+                        curve=flet.AnimationCurve.DECELERATE
                     ),
-                    flet.Divider(
-                        height=5,
-                        color=flet.Colors.TRANSPARENT,
-                    ),
-                    *self.destinations,
-                    (flet.Divider(height=5), log_out) if log_out else flet.Container()
-                ]
-            )
+                    content=flet.Column(
+                        horizontal_alignment=flet.CrossAxisAlignment.CENTER,
+                        controls=[
+                            self.datos_usuarios(
+                                iniciales=iniciales,
+                                nombre=nombre,
+                                descripcion=descripcion
+                            ),
+                            flet.IconButton(
+                                icon=flet.Icons.ARROW_BACK_IOS_ROUNDED,
+                                on_click=self.animar_sidebar,
+                                rotate=flet.transform.Rotate(0, alignment=flet.alignment.center),
+                                animate_rotation=flet.animation.Animation(300, flet.AnimationCurve.DECELERATE),
+                            ),
+                            flet.Divider(
+                                height=5,
+                                color=flet.Colors.TRANSPARENT,
+                            ),
+                            *self.destinations,
+                            (flet.Divider(height=5), log_out) if log_out else flet.Container()
+                        ]
+                    )
+                )
+            ]
         )
 
     def seleccionar(self, e):
@@ -133,6 +139,9 @@ class Sidebar(flet.Container):
                                 weight=flet.FontWeight.BOLD,
                                 opacity=1,
                                 animate_opacity=200,
+                                width=130,
+                                max_lines=2,
+                                overflow=flet.TextOverflow.ELLIPSIS
                             ),
                             flet.Text(
                                 value=descripcion,
@@ -140,6 +149,9 @@ class Sidebar(flet.Container):
                                 weight=flet.FontWeight.W_400,
                                 opacity=1,
                                 animate_opacity=200,
+                                width=130,
+                                max_lines=2,
+                                overflow=flet.TextOverflow.ELLIPSIS
                             ),
                         ]
                     )
@@ -160,7 +172,7 @@ class Sidebar(flet.Container):
             time.sleep(0.2)
             self.width = 62
         else:
-            self.width = self.titulo.width
+            self.width = 200
             e.control.rotate.angle -= pi
             self.update()
             time.sleep(0.1)
@@ -254,7 +266,7 @@ def main(page: flet.Page):
     page.add(
         Sidebar(
             iniciales="ALB",
-            nombre="Albano Construcciones S.R.L.",
+            nombre="Albano Construcciones S.R.L. y mas texto para ver la ellipsis",
             descripcion="Construcción",
             destinations=[
                 SidebarDestination(
