@@ -51,11 +51,13 @@ class Sidebar(flet.Column):
             nombre,
             descripcion,
             destinations: [SidebarDestination],
+            on_click=None,
             log_out: SidebarDestination | None = None
     ):
         self.destinations = [destination for destination in destinations]
         for destination in self.destinations:
             destination.on_tap_down = self.seleccionar
+            destination.on_click = on_click
         super().__init__(
             expand=True,
             width=200,
@@ -63,7 +65,6 @@ class Sidebar(flet.Column):
                 flet.Container(
                     expand=True,
                     bgcolor=flet.Colors.SURFACE,
-                    # width=200,
                     alignment=flet.alignment.center,
                     padding=flet.Padding(top=15, left=10, right=10, bottom=0),
                     animate=flet.animation.Animation(
